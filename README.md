@@ -4,5 +4,5 @@
     Maybe some views is wrong. I'm very glad to receive your suggestions.Thank you!
     Good luck!
     
-    Acknowledge for Sebastian Raschka，I learn by his book **PYTHON MACHINE LEARNING**.
+    Acknowledge for Sebastian Raschka，I learn by his book 《PYTHON MACHINE LEARNING》.
   
