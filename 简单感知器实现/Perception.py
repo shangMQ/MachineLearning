@@ -65,7 +65,7 @@ class Perception(object):
     def net_input(self, X):
         """计算净输入"""
         #np.dot()计算点积
-        return np.dot(X, self.w_[1:]) + self.w[0] 
+        return np.dot(X, self.w_[1:]) + self.w_[0] 
     
     def predict(self, X):
         """用于计算权重更新时的类标，或者预测类标"""
