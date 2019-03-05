@@ -14,11 +14,12 @@ class Perception(object):
         ------
         w_: array
             一维权重向量
-        errors：list
+        errors_：list
             记录神经元判断错误的次数列表
         ------
     """
     def __init__(self, eta = 0.01, n_iter = 10):
+         #如果未传入学习率和训练次数，默认学习率维0.01，训练次数为10次。
         self.eta = eta
         self.n_iter = n_iter
     
@@ -32,7 +33,7 @@ class Perception(object):
                shape = [n, m]
                训练样本，n是样本数，m是每个样本的特征数
             y：numpy.array
-               shape = [n_samples]
+               shape = [n_samples,]
                被训练的数据集的真实类标
             ------
             
@@ -49,10 +50,12 @@ class Perception(object):
         self.w_ = np.zeros(1 + X.shape[1]) 
         self.errors_ = []
         
+        #迭代n_iter次
         for _ in range(self.n_iter):
+            #初始化每次的错误次数为0
             errors = 0
             for xi, target in zip(X, y): #xi是每一个样本，包含m个特征，y是真实标记
-                #计算预测与实际值之间的误差再乘以学习率
+                #计算预测与实际值之间的误差再乘以学习率，产生一个m维的行数组，每个元素代表▲w
                 update = self.eta * (target - self.predict(xi))
                 #更新权重
                 self.w_[1:] += update * xi
