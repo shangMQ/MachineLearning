@@ -19,7 +19,7 @@ class Perception(object):
         ------
     """
     def __init__(self, eta = 0.01, n_iter = 10):
-         #如果未传入学习率和训练次数，默认学习率维0.01，训练次数为10次。
+         #如果未传入学习率和训练次数，默认学习率为0.01，训练次数为10次。
         self.eta = eta
         self.n_iter = n_iter
     
@@ -63,6 +63,7 @@ class Perception(object):
                 #将每轮迭代过程中分类错误的样本数量收集起来，便于后续的评判。
                 errors += int(update != 0.0)
             self.errors_.append(errors)
+        #返回拟合后的感知器
         return self
     
     def net_input(self, X):
