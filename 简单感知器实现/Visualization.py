@@ -46,7 +46,7 @@ df = pd.read_csv("iris-data.csv",header=None)
 y = df.iloc[0:100, 4].values
 print(df.head())
 
-#标准化鸢尾花标记，将山鸢尾标准化为-1，变色鸢尾标准化为1。
+#标准化鸢尾花标记，将山鸢尾标准化为1，变色鸢尾标准化为-1。
 normal_y = np.where(y == 'Iris-setosa', 1, -1)
 print(normal_y)
 
