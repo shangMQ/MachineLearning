@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 class gradientdescent(object):
     """
-    自适应线性神经元
+    简单梯度下降法
     参数：
     -----------
     eta:float类型，学习率【0,1】
