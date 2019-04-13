@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Apr 11 15:35:03 2019
-使用梯度下降法拟合单变量线性回归
+使用梯度上升法拟合单变量线性回归
 @author: Kylin
 """
 import numpy as np
