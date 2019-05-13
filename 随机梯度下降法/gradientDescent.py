@@ -49,6 +49,8 @@ class gradientdescent(object):
             errors = output - y
             print("errors", errors)
             J0 = errors.sum()/n
+            #n是样本数
+            #注意(X.dot(errors))计算出来的是一个(n,)维数组
             J1 = (X.dot(errors)).sum()/n
             self.w_[0] -= self.eta * J0
             self.w_[1] -= self.eta * J1
@@ -64,7 +66,7 @@ class gradientdescent(object):
 
 if __name__ == "__main__":
     X = np.linspace(0,4,5)
-    y = X * 3 + 1
+    y = X * 3 + 1 + np.random.randn(5)
     n = 5
     print("X", X)
     print("y", y)
