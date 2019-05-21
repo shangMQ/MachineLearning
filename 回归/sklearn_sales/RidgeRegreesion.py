@@ -30,12 +30,14 @@ if __name__ == "__main__":
     model2 = Lasso()
     
     #3. 设置α,并拟合模型
-    alpha_can = np.logspace(-3, 2, 10)
+    alpha_can = np.logspace(-3, 2, 10) #创建等比数列
+    #cv=5使用五折交叉验证，Rideg()需要一个α参数来设定正则化系数，默认是1.
     ridge_model = GridSearchCV(model1, param_grid={'alpha': alpha_can}, cv=5)
     ridge_model.fit(x, y)
     lasso_model = GridSearchCV(model2, param_grid={'alpha': alpha_can}, cv=5)
     lasso_model.fit(x, y)
-    print('Ridge回归模型的验证参数：\n', ridge_model.best_params_)
+    #best_params_参数是最佳λ
+    print('Ridge回归模型的验证参数：\n', ridge_model.best_params_) 
     print('Lasso回归模型的验证参数：\n', lasso_model.best_params_)
 
     #4. 查看预测结果的mse和rmse
