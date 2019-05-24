@@ -54,7 +54,7 @@ if __name__ == "__main__":
     plt.plot(data['Newspaper'], y, 'b*')
     plt.title('Newspaper')
     plt.grid()
-    plt.tight_layout()
+    plt.tight_layout()#进行排版
     plt.show()
     
     print("*"*5, "利用TV、radio和newspaer三个特征构建模型", "*"*5)
@@ -98,6 +98,7 @@ if __name__ == "__main__":
     print("(均方误差={:.2f}, 均方根误差={:.2f})".format(mse, rmse))
 
     t = np.arange(len(x2_test))
+    fig = plt.figure("利用回归进行预测")
     plt.plot(t, y_test, 'r-', linewidth=2, label='Test')
     plt.plot(t, y_hat, 'g-', linewidth=2, label='Predict')
     plt.xlabel("cost(million$)")
