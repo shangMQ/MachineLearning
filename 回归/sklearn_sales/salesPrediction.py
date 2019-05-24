@@ -71,6 +71,10 @@ if __name__ == "__main__":
     mse = np.average((y_hat - np.array(y_test)) ** 2)  # Mean Squared Error
     rmse = np.sqrt(mse)  # Root Mean Squared Error
     print("(均方误差={:.2f}, 均方根误差={:.2f})".format(mse, rmse))
+    #model.score()函数实际计算的就是R2决定系数
+    print("R2_train =", model.score(x_train, y_train))
+    print("R2_test =", model.score(x_test, y_test))
+    
 
     t = np.arange(len(x1_test))
     plt.plot(t, y_test, 'r-', linewidth=2, label='Test')
