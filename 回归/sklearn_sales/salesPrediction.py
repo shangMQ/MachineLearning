@@ -95,7 +95,10 @@ if __name__ == "__main__":
     print("模型系数:", linreg.coef_)
     print("模型截距:", linreg.intercept_)
 
-    
+    #因为随机打乱了，对测试集进行排序，方便图像显示效果
+    order = y_test.argsort(axis=0) #y_test是个列向量
+    y_test = y_test.values[order]
+    x_test = x_test.values[order,:]
     y_hat = linreg.predict(np.array(x2_test))
     mse = np.average((y_hat - np.array(y_test)) ** 2)  # Mean Squared Error
     rmse = np.sqrt(mse)  # Root Mean Squared Error
