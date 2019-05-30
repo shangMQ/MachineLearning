@@ -85,10 +85,10 @@ if __name__ == "__main__":
     plt.figure(facecolor='w')
     plt.pcolormesh(x1, x2, y_show_hat, cmap=cm_light)  # 预测值的显示
     
-    plt.scatter(x_test[:, 0], x_test[:, 1], c=y_test.ravel(), edgecolors='k', s=100, cmap=cm_dark, marker='o')  # 测试数据
+    plt.scatter(x_test[:, 0], x_test[:, 1], c=y_test.ravel(), edgecolors='k', s=100, cmap=cm_dark, marker='o')  # 测试数据散点图，如果只想显示测试样本的图例，请把下行注释掉
     
     
-    plt.scatter(x[:, 0], x[:, 1], c=y.ravel(), edgecolors='k', s=40, cmap=cm_dark)  # 全部数据
+    plt.scatter(x[:, 0], x[:, 1], c=y.ravel(), edgecolors='k', s=40, cmap=cm_dark)  # 全部数据的散点图
     plt.xlabel(iris_feature[0], fontsize=15)
     plt.ylabel(iris_feature[2], fontsize=15)
     plt.xlim(x1_min, x1_max)
