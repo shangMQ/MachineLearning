@@ -39,7 +39,7 @@ if __name__ == "__main__":
     y = np.array(data["label"])
     
     #划分数据集
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=1)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.3, random_state=1)
 
     # 决策树参数估计
     # min_samples_split = 10：如果该结点包含的样本数目大于10，则(有可能)对其分支
@@ -64,7 +64,9 @@ if __name__ == "__main__":
     x2_min, x2_max = x[:, 1].min(), x[:, 1].max()  # 第1列的范围
     t1 = np.linspace(x1_min, x1_max, N)
     t2 = np.linspace(x2_min, x2_max, M)
+    #x1按行重复M次，x2按列重复N次，x1和x2都是M行N列。
     x1, x2 = np.meshgrid(t1, t2)  # 生成网格采样点
+    #按行展开，然后按列拼在一起，得到10000对数据点
     x_show = np.stack((x1.flat, x2.flat), axis=1)  # 测试点
     y_show_hat = model.predict(x_show)  # 预测值
     
@@ -113,7 +115,7 @@ if __name__ == "__main__":
         result = (y_test_hat == y_test)  # True则预测正确，False则预测错误
         err = 1 - np.mean(result)
         err_list.append(err)
-        print(d, ' 准确度: %.2f%%' % (100 * err))
+        print(d, ' 错误率: %.2f%%' % (100 * err))
     plt.figure(facecolor='w')
     plt.plot(depth, err_list, 'ro-', lw=2)
     plt.xlabel(u'决策树深度', fontsize=15)
