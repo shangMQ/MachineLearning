@@ -40,10 +40,6 @@ if __name__ == "__main__":
     
     #划分数据集
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=1)
-   
-   
-    #ss = StandardScaler()
-    #ss = ss.fit(x_train)
 
     # 决策树参数估计
     # min_samples_split = 10：如果该结点包含的样本数目大于10，则(有可能)对其分支
@@ -60,6 +56,7 @@ if __name__ == "__main__":
     # dot -Tpng -o 1.png 1.dot
     f = open('.\\iris_tree.dot', 'w')
     tree.export_graphviz(model.get_params('DTC')['DTC'], out_file=f)
+    f.close()
     
     # 画图
     N, M = 100, 100  # 横纵各采样多少个值
