@@ -8,7 +8,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def loadSimpleData():
-    """创建数据"""
+    """
+    创建数据
+    返回值：数据矩阵，类别标签（列表）
+    """
     data = [[1., 2.1],
             [1.5, 1.6],
             [1.3, 1.],
@@ -26,11 +29,12 @@ def stumpClassify(dataMat, dimen, threshVal, threshIneq):
     dimen:第几个特征
     threshVal:阈值
     threshIneq:标记
+    返回值：分类数组
     """
     retArray = np.ones((np.shape(dataMat)[0],1)) #（样本个数，1）
-    if threshIneq == 'lt':#错误率less than
+    if threshIneq == 'lt':#less than
         retArray[dataMat[:, dimen] <= threshVal] = -1
-    else:#错误率greater than
+    else:#greater than
         retArray[dataMat[:, dimen] > threshVal] = -1
     return retArray
 
@@ -52,9 +56,9 @@ def buildStump(dataArr,classLabels,D):
     classLabels:标签数组
     D:样本权重
     返回值：
-    bestStump:最佳单层决策树信息
+    bestStump:最佳单层决策树信息（字典）
     minError:最小误差
-    bestClasEst:最佳的分类结果
+    bestClasEst:最佳的分类结果（矩阵）
     """
     dataMatrix = np.mat(dataArr);
     labelMat = np.mat(classLabels).T
