@@ -106,11 +106,13 @@ def adaboostTrainDS(dataArr, classLabels, numIt=40):
     for i in range(numIt):
         bestStump, error, classEst = buildStump(dataArr, classLabels, D)
         print("当前第%d次循环"%i)
-        alpha = float(0.5 * np.log((1 - error) / max(error, 1e-16)))#每个分类器的权重
+        #alpha = 1/2*log((1-ε)/ε)
+        alpha = float(0.5 * np.log((1 - error) / max(error, 1e-16)))#每个分类器的权重,避免错误率为0时使得分母为0
         bestStump['alpha'] = alpha
         weakClassArr.append(bestStump)
         print("当前单层决策树分类结果:", classEst.T)
         #计算下一次迭代的权重向量D，分类正确的权重减小，分类错误的权重增大
+        #expon = -真实类标*预测值
         expon = np.multiply(-1 * alpha * np.mat(classLabels).T, classEst)
         D = np.multiply(D, np.exp(expon))
         D = D / D.sum()
