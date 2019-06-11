@@ -13,7 +13,7 @@ def log_reg(y_hat, y):
     #自定义损失函数
     p = 1.0 / (1.0 + np.exp(-y_hat))
     g = p - y.get_label() #梯度
-    h = p * (1.0-p) #二阶导
+    h = p * (1.0-p) #应该用到二阶导数信息(但是这个是logistic函数的一阶导数啊)
     return g, h
 
 
