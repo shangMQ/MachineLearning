@@ -6,9 +6,14 @@ Created on Thu Jun 13 21:45:41 2019
 """
 import math
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
+    #设置图像的标题字体
+    mpl.rcParams['font.sans-serif'] = [u'simHei']
+    mpl.rcParams['axes.unicode_minus'] = False
+    
     x = np.array(np.linspace(-3,3,1001, dtype=np.float))
     y_logit = np.log(1 + np.exp(-x))/np.log(2)
     y_01 = x < 0
@@ -21,5 +26,7 @@ if __name__ == "__main__":
     plt.plot(x, y_hinge, 'g-', label = 'SVM loss', linewidth=2)
     plt.grid()
     plt.title("Compared with Loss Function")
+    plt.xlabel("函数间隔")
+    plt.ylabel("Loss")
     plt.legend()
     plt.show()
