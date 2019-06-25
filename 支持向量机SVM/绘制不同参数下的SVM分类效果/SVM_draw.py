@@ -57,6 +57,7 @@ if __name__ == "__main__":
         plt.scatter(x[clf.support_, 0], x[clf.support_, 1], edgecolors='k', facecolors='none', s=100, marker='o')   # 支撑向量
         z = clf.decision_function(grid_test)
         z = z.reshape(x1.shape)
+        #plt.contour()函数画出等高线
         plt.contour(x1, x2, z, colors=list('krk'), linestyles=['--', '-', '--'], linewidths=[1, 2, 1], levels=[-1, 0, 1])
         plt.xlim(x1_min, x1_max)
         plt.ylim(x2_min, x2_max)
