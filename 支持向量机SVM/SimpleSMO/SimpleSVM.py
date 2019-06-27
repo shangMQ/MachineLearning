@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jun 12 21:07:03 2019
+Created on Wed Jun 27 10:07:03 2019
 简易版SMO算法的实现
 与SMO算法中的外循环确定要优化的最佳α对，简化版跳过这一步骤，首先在数据集上遍历每一个α，
 然后在剩下的α集合中随机选择另一个α，从而构建α对。
@@ -14,8 +14,10 @@ import matplotlib.pyplot as plt
 def loadDataSet(filename):
     """
     加载数据集
-    参数：文件名
+    参数：文件名(文件中的每个样本有两个特征，最后一列是样本类别。)
+    返回值：特征列表，类标列表
     """
+    
     dataList = []
     labelList = []
     fr = open(filename)
@@ -24,6 +26,8 @@ def loadDataSet(filename):
         lineArr = line.strip().split('\t')
         dataList.append([float(lineArr[0]), float(lineArr[1])])
         labelList.append(float(lineArr[2]))
+    
+    fr.close()
     
     return dataList, labelList
 
@@ -74,11 +78,13 @@ def clipAlpha(aj, H, L):
     elif aj < L:
         #低于下界
         aj = L
+    
     return aj
 
 def simple(dataList, labelList, C, toler, maxIter):
     """
     简易SMO
+    (与标准版的不同之处，随机选择了一个作为与αi成对的αj)
     参数：
         dataList:特征数据
         labelList:类标数据
@@ -86,7 +92,7 @@ def simple(dataList, labelList, C, toler, maxIter):
         toler:容错率
         maxIter:最大迭代次数
     """
-    #为了便于处理，先将数据集转换成numpy矩阵
+    #为了便于处理，先将数据集转换成numpy矩阵(利用np.mat)
     dataMatrix = np.mat(dataList)
     labelMatrix = np.mat(labelList).T
     m, n = np.shape(dataMatrix) #m为样本总数，n为特征数
@@ -95,22 +101,22 @@ def simple(dataList, labelList, C, toler, maxIter):
     iter = 0 #存储没有任何α改变的情况下遍历数据集的次数，当达到maxIter时，结束函数
     
     while (iter < maxIter):
-        #当迭代次数小于最大迭代次数时（外循环）
+        #1. 当迭代次数小于最大迭代次数时（外循环）
         alphaPairsChanged = 0 #记录α是否已经进行优化
         
         for i in range(m):
-            #对数据集中的每个数据向量（内循环）
-            #计算误差
+            #2. 对数据集中的每个数据向量（内循环）
+            #计算误差Ei
             fXi = float(np.multiply(alphas, labelMatrix).T * (dataMatrix*dataMatrix[i,:].T)) + b
             Ei = fXi - labelMatrix[i]
             
             if ((labelMatrix[i]*Ei < -toler) and (alphas[i] < C)) or ((labelMatrix[i]*Ei > toler) and (alphas[i] > 0)):
-                #如果误差很大，可以对该数据实例所对应的α值进行优化
-                j = selectJrand(i,m) #选择一个α对
-                #步骤1:计算这个α所对应的数据的误差
+                #3. 如果误差很大，可以对该数据实例所对应的α值进行优化
+                j = selectJrand(i,m) #选择一个与αi成对的αj
+                #步骤1: 计算这个α所对应的数据的误差
                 fXj = float(np.multiply(alphas,labelMatrix).T*(dataMatrix*dataMatrix[j,:].T)) + b
                 Ej = fXj - float(labelMatrix[j])
-                #保存更新前的内容
+                #保存更新前α的内容
                 alphaIold = alphas[i].copy()
                 alphaJold = alphas[j].copy();
                 
@@ -123,20 +129,21 @@ def simple(dataList, labelList, C, toler, maxIter):
                     #如果ai和aj所对应的数据属于相同的类别
                     L = max(0, alphas[j] + alphas[i] - C)
                     H = min(C, alphas[j] + alphas[i])
+               
                 if L==H: 
                     #如果上下界相同，就不需要调整了，continue跳过
                     print("L==H")
                     continue
                 
                 #步骤3:计算eta（a[j]）的最优修改量
-                eta = 2.0 * dataMatrix[i,:]*dataMatrix[j,:].T - dataMatrix[i,:]*dataMatrix[i,:].T - dataMatrix[j,:]*dataMatrix[j,:].T
+                eta = dataMatrix[i,:]*dataMatrix[i,:].T + dataMatrix[j,:]*dataMatrix[j,:].T - 2.0 * dataMatrix[i,:]*dataMatrix[j,:].T
                 
-                if eta >= 0: 
+                if eta <= 0: 
                     print("eta>=0") 
                     continue
                 
                 #步骤4:更新eta
-                alphas[j] -= labelMatrix[j]*(Ei - Ej)/eta
+                alphas[j] += labelMatrix[j]*(Ei - Ej)/eta
                 alphas[j] = clipAlpha(alphas[j],H,L) #对a[j]进行修剪
                 
                 if (abs(alphas[j] - alphaJold) < 0.00001): 
@@ -213,7 +220,7 @@ def showSupportVector(dataArr, labelArr, alphas, b, fig):
     x = x.reshape(-1,1)
     y = y.reshape(-1,1)
     
-    plt.plot(x, y, label="seperate Line")
+    plt.plot(x, y, label="seperating hyperplane")
     plt.legend()
     plt.ylim(-8,6)
     
@@ -231,5 +238,4 @@ if __name__ == "__main__":
     
     #4. 绘制超平面（这里是一根线）
     showSupportVector(dataArr, labelArr, alphas, b, fig)
-    
     
