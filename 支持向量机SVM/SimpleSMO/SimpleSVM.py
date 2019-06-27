@@ -139,7 +139,7 @@ def simple(dataList, labelList, C, toler, maxIter):
                 eta = dataMatrix[i,:]*dataMatrix[i,:].T + dataMatrix[j,:]*dataMatrix[j,:].T - 2.0 * dataMatrix[i,:]*dataMatrix[j,:].T
                 
                 if eta <= 0: 
-                    print("eta>=0") 
+                    print("eta<=0") 
                     continue
                 
                 #步骤4:更新eta
