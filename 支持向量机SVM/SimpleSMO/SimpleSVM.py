@@ -204,8 +204,8 @@ def showSupportVector(dataArr, labelArr, alphas, b, fig):
                 sv_feature2_positive.append(dataArr[i][1])
     
     
-    plt.scatter(sv_feature1_positive, sv_feature2_positive, c='yellow', s=50, label='support')
-    plt.scatter(sv_feature1_negative, sv_feature2_negative, c='yellow', s=50)
+    plt.scatter(sv_feature1_positive, sv_feature2_positive, c='yellow', s=120, label='support vector', edgecolors='k')
+    plt.scatter(sv_feature1_negative, sv_feature2_negative, c='yellow', s=120, edgecolors='k')
     
     #计算w
     labelMatrix = np.mat(labelArr).T
