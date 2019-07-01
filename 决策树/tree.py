@@ -18,7 +18,7 @@ def calcShannonEnt(dataSet):
     #如果当前键值不存在，则扩展字典并将当前键值加入字典，
     #每个键值都记录了当前类别出现的次数。
     for featVec in dataSet: #the the number of unique elements and their occurance
-        currentLabel = featVec[-1]
+        currentLabel = featVec[-1] #获取相应的类别
         if currentLabel not in labelCounts.keys(): 
             labelCounts[currentLabel] = 0
         labelCounts[currentLabel] += 1
@@ -42,7 +42,7 @@ def createDataSet():
 
 def splitDataSet(dataSet, axis, value):
     """按照给定的轴划分数据集，
-    参数：数据集、待划分数据集的特征和需要返回的特征值
+    参数：数据集、待划分数据集的特征和需要满足的特征值
     返回值为满足给定axis的value值的数据列表
     """
     retDataSet = [] #为了不修改原始数据集，重新创建一个列表
@@ -60,16 +60,16 @@ def chooseBestFeatureToSplit(dataSet):
     实现选取特征，划分数据集，计算得出最好的划分数据集的特征
     """
     numFeatures = len(dataSet[0]) - 1 #最后一列是类标，不是特征元素
-    baseEntropy = calcShannonEnt(dataSet) #计算整个数据集的原始香农熵
+    baseEntropy = calcShannonEnt(dataSet) #计算整个数据集的原始香农熵H(D)
     bestInfoGain = 0.0 #初始化条件熵为0
     bestFeature = -1
     for i in range(numFeatures): #遍历所有特征
         featList = [example[i] for example in dataSet] #将第i个特征的每个数据的值放入featlist列表
-        uniqueVals = set(featList) #转化为元素不同的集合
+        uniqueVals = set(featList) #转化为元素不同的集合,等同于去除相同值
         newEntropy = 0.0
         for value in uniqueVals: #计算每种划分方式的信息熵
             subDataSet = splitDataSet(dataSet, i, value)
-            prob = len(subDataSet)/float(len(dataSet))
+            prob = len(subDataSet)/float(len(dataSet))#计算p(Ai)=Di/D
             newEntropy += prob * calcShannonEnt(subDataSet)
         
         #信息增益=原始信息熵-条件熵总和
