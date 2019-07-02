@@ -37,8 +37,8 @@ def createDataSet():
                [1, 0, 'no'],
                [0, 1, 'no'],
                [0, 1, 'no']]
-    labels = ['no surfacing', 'flippers']
-    return dataSet, labels
+    featurelabels = ['no surfacing', 'flippers'] #特征名
+    return dataSet, featurelabels
 
 def splitDataSet(dataSet, axis, value):
     """按照给定的轴划分数据集，
@@ -95,7 +95,7 @@ def majorityCnt(classList):
                               reverse=True)
     return sortedClassCount[0][0]
 
-def createTree(dataSet,labels):
+def createTree(dataSet,featurelabels):
     """
     创建树的函数
     输入：数据集，标签
@@ -111,9 +111,9 @@ def createTree(dataSet,labels):
         #没有多余的属性用于划分，则返回出现次数最多的类标
         return majorityCnt(classList)
     bestFeat = chooseBestFeatureToSplit(dataSet)#选择最优划分属性下标
-    bestFeatLabel = labels[bestFeat]#获得相应的类标
+    bestFeatLabel = featurelabels[bestFeat]#获得相应的类标
     myTree = {bestFeatLabel:{}}#以相应的类标为键，创建一个myTree字典
-    del(labels[bestFeat]) #在类标中删除该类标
+    del(featurelabels[bestFeat]) #在类标中删除该类标
     #找到数据集中各个数据在该属性上的值
     featValues = [example[bestFeat] for example in dataSet] 
     uniqueVals = set(featValues)#转化为无重复数据的集合
@@ -121,7 +121,7 @@ def createTree(dataSet,labels):
         """
         遍历bestFeat属性的各个值
         """
-        subLabels = labels[:] #赋值类标，以防修改labels
+        subLabels = featurelabels[:] #赋值类标，以防修改labels
         myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet,
                                                   bestFeat, value),
                                                   subLabels)
@@ -150,9 +150,9 @@ def grabTree(filename):
     return pickle.load(fr)
 
 if __name__ == '__main__':
-    myDat, labels = createDataSet()
-    newlabels = labels.copy()
-    Tree = createTree(myDat, newlabels)
+    myDat, featurelabels = createDataSet()
+    newfeaturelabels = featurelabels.copy()
+    Tree = createTree(myDat, newfeaturelabels)
     storeTree(Tree, "classifierStorage.txt")
     print(grabTree("classifierStorage.txt"))
     
