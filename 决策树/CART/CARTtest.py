@@ -45,7 +45,7 @@ def regErr(dataSet):
     m = np.shape(dataSet)[0] #m为样本总数
     return np.var(dataSet[:,-1]) * m #返回总方差
 
-def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(1,4)):
+def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(0.3,1)):
     """
     用最佳的方式切分数据集并生成相应的叶子节点
     参数：
@@ -107,7 +107,7 @@ def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(1,4)):
     return bestIndex,bestValue#returns the best feature to split on
                               #and the value used for that split
 
-def createTree(dataSet, leafType=regLeaf, errType=regErr, ops=(1,4)):
+def createTree(dataSet, leafType=regLeaf, errType=regErr, ops=(0.3,1)):
     #assume dataSet is NumPy Mat so we can array filtering
     """
     创建树
