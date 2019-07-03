@@ -132,12 +132,20 @@ def createTree(dataSet, leafType=regLeaf, errType=regErr, ops=(1,4)):
     retTree['right'] = createTree(rSet, leafType, errType, ops)
     return retTree  
 
+def showData(myMat):
+    x = (myMat[:,0].ravel()[0]).A.tolist()
+    y = (myMat[:,1].ravel()[0]).A.tolist()
+    plt.scatter(x, y)
+    plt.xlabel("x")
+    plt.ylabel("y")
+
+
 if __name__ == "__main__":
     #获取数据
     myDat = loadDataSet("ex00.txt")
     myMat = np.mat(myDat)
     #数据可视化
-    #showData(myMat)
+    showData(myMat)
     #构建CART树
     tree = createTree(myMat)
     print(tree)
