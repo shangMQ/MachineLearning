@@ -106,22 +106,22 @@ def adaboostTrainDS(dataArr, classLabels, numIt=40):
     for i in range(numIt):
         bestStump, error, classEst = buildStump(dataArr, classLabels, D)
         print("当前第%d次循环"%i)
-        #alpha = 1/2*log((1-ε)/ε)
+        #计算分类器权重alpha = 1/2*log((1-ε)/ε)
         alpha = float(0.5 * np.log((1 - error) / max(error, 1e-16)))#每个分类器的权重,避免错误率为0时使得分母为0
-        bestStump['alpha'] = alpha
-        weakClassArr.append(bestStump)
+        bestStump['alpha'] = alpha #将分类器权重加入分类器信息的字典中
+        weakClassArr.append(bestStump)#将分类器加入弱分类器列表
         print("当前单层决策树分类结果:", classEst.T)
         #计算下一次迭代的权重向量D，分类正确的权重减小，分类错误的权重增大
         #expon = -真实类标*预测值
         expon = np.multiply(-1 * alpha * np.mat(classLabels).T, classEst)
-        D = np.multiply(D, np.exp(expon))
-        D = D / D.sum()
+        D = np.multiply(D, np.exp(expon))#计算下一次样本的权重
+        D = D / D.sum()#对下一次样本权重做标准化
         #计算错误率
         aggClassEst += alpha * classEst
         print("累计值：", aggClassEst.T)
         aggErrors = np.multiply(np.sign(aggClassEst) != np.mat(classLabels).T, np.ones((m,1)))
         errorRate = aggErrors.sum() / m
-        print("错误率：", errorRate)
+        print("总平均错误率：", errorRate)
         if errorRate == 0.0:
             break
     return weakClassArr, aggClassEst
