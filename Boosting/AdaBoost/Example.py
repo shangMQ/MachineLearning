@@ -43,34 +43,32 @@ def buildStump(dataArr,classLabels,D):
     bestClasEst:最佳的分类结果
     """
     labelMat = np.mat(classLabels).T
-    m, n = np.shape(dataArr) #m是样本数，n是特征数
+    m = np.shape(dataArr)[0] #m是样本数
     numSteps = 10.0 #设定步数
     bestStump = {} #用字典存储最佳单层决策树的相关信息
     bestClasEst = np.mat(np.zeros((m,1))) #初始化分类结果为1
     minError = np.inf #将最小错误率初始化为无穷
-    
-    for i in range(n):#第一层循环遍历n个特征
-        rangeMin = dataArr[:,i].min() #计算该特征的极值
-        rangeMax = dataArr[:,i].max()
-        stepSize = (rangeMax-rangeMin)/numSteps #计算步长
-        for j in range(-1, int(numSteps) + 1):
-            #numSteps+2次循环
-            for inequal in ['lt', 'gt']: 
-                #分别尝试less than和greater than
-                threshVal = (rangeMin + float(j) * stepSize) #逐渐增加阈值
-                #用第i个特征来划分数据集，阈值为threshVal。符号为inequal
-                predictedVals = stumpClassify(dataArr,threshVal,inequal)
-                errArr = np.mat(np.ones((m,1))) #错误率向量（m，1）初始化为1
-                errArr[predictedVals == labelMat] = 0 #预测正确的，变为0
-                weightedError = D.T*errArr  #计算误差
-                
-                if weightedError < minError:
-                    #如果误差小于最小误差就将当前误差作为最小误差
-                    minError = weightedError
-                    bestClasEst = predictedVals.copy()
-                    #记录相应的划分信息
-                    bestStump['thresh'] = threshVal#所用阈值
-                    bestStump['ineq'] = inequal#标记
+    rangeMin = dataArr[:,0].min() #计算该特征的极值
+    rangeMax = dataArr[:,0].max()
+    stepSize = (rangeMax-rangeMin)/numSteps #计算步长
+    for j in range(-1, int(numSteps) + 1):
+        #numSteps+2次循环
+        for inequal in ['lt', 'gt']: 
+            #分别尝试less than和greater than
+            threshVal = (rangeMin + float(j) * stepSize) #逐渐增加阈值
+            #用第i个特征来划分数据集，阈值为threshVal。符号为inequal
+            predictedVals = stumpClassify(dataArr,threshVal,inequal)
+            errArr = np.mat(np.ones((m,1))) #错误率向量（m，1）初始化为1
+            errArr[predictedVals == labelMat] = 0 #预测正确的，变为0
+            weightedError = D.T*errArr  #计算误差
+            
+            if weightedError < minError:
+                #如果误差小于最小误差就将当前误差作为最小误差
+                minError = weightedError
+                bestClasEst = predictedVals.copy()
+                #记录相应的划分信息
+                bestStump['thresh'] = threshVal#所用阈值
+                bestStump['ineq'] = inequal#标记
     return bestStump, minError, bestClasEst
 
 def adaboostTrainDS(dataArr, classLabels, numIt=40):
