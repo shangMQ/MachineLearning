@@ -120,7 +120,8 @@ def adaboostTrainDS(dataArr, classLabels, numIt=40):
 
 if __name__ == "__main__":
     dataMat, labels = loadSimpleData()
-    print(dataMat)
     weakClassArr, aggClassEst = adaboostTrainDS(dataMat, labels, 40)
+    classify_result = np.sign(aggClassEst)
     print("弱分类器数组：", weakClassArr)
     print("累计分类结果：", aggClassEst)
+    print("最终分类结果：", classify_result)
