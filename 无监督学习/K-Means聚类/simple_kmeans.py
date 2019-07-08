@@ -140,7 +140,7 @@ if __name__ == "__main__":
     dataMat = np.mat(dataSet)
     print("最小值:", min(dataMat[:,0]), min(dataMat[:,1]))
     print("最大值:", max(dataMat[:,0]),max(dataMat[:,1]))
-    k = int(input("请输入k值:"))
+    k = 4
     centroids, clusterAssignment = kMeans(dataMat, k)
     showClusterData(dataMat, clusterAssignment, k)
     
