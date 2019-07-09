@@ -37,7 +37,7 @@ def showData(dataSet):
     plt.xlabel("Feature1")
     plt.ylabel("Feature2")
 
-def showClusterData(dataMat, clusterAssignment, k):
+def showClusterData(dataMat, centroids, clusterAssignment, k):
     """
     可视化聚簇之后的数据集
     参数：
@@ -47,11 +47,16 @@ def showClusterData(dataMat, clusterAssignment, k):
     """
     cluster = clusterAssignment.A[:, 0]
     data = dataMat.A
+    centroids = centroids.A
     colors = ['r', 'y', 'b', 'g']
     fig = plt.figure("聚簇后的数据点")
     for i in range(len(dataMat)):
         ki = int(cluster[i])
         plt.scatter(data[i][0], data[i][1], c = colors[ki])
+    
+    #绘制簇的质心
+    for j in range(len(centroids)):
+        plt.scatter(centroids[j][0], centroids[j][1], c = 'k', marker='d')
     
     plt.title("After Cluster")
     plt.xlabel("Feature1")
@@ -142,7 +147,7 @@ if __name__ == "__main__":
     print("最大值:", max(dataMat[:,0]),max(dataMat[:,1]))
     k = 4
     centroids, clusterAssignment = kMeans(dataMat, k)
-    showClusterData(dataMat, clusterAssignment, k)
+    showClusterData(dataMat, centroids, clusterAssignment, k)
     
     
     
