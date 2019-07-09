@@ -123,7 +123,7 @@ def kMeans(dataMat, k, distMeans = distEclud, createCent = randCent):
             #将数据点分配到距离其最近的点
             if clusterAssignment[i, 0] != minIndex:
                 clusterChanged = True
-                clusterAssignment[i, :] = minIndex, minDist**2
+                clusterAssignment[i, :] = minIndex, minDist**2 #注意这里样本点与质心的距离定义为欧式距离的平方
         print("聚簇：", centroids)    
         
         #对每一个簇，计算簇中所有点的均值并将均值作为质心
