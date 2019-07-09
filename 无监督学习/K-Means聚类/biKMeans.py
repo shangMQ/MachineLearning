@@ -84,6 +84,7 @@ def biKmeans(dataSet, k, distMeas=distEclud):
         bestClustAss[np.nonzero(bestClustAss[:,0].A == 1)[0],0] = len(centList) #将索引为1的子簇划分出去
         bestClustAss[np.nonzero(bestClustAss[:,0].A == 0)[0],0] = bestCentToSplit #索引为0的子簇保持原来的簇索引
         print('此次选择的最佳划分簇索引是: ',bestCentToSplit)
+        print('该簇的元素个数为：', len(bestClustAss))
         centList[bestCentToSplit] = bestNewCents[0,:].tolist()[0]#替换划分后的第一个簇的质心值
         centList.append(bestNewCents[1,:].tolist()[0]) #添加新簇
         clusterAssment[np.nonzero(clusterAssment[:,0].A == bestCentToSplit)[0],:]= bestClustAss#reassign new clusters, and SSE
