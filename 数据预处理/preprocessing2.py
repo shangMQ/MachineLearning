@@ -23,7 +23,7 @@ fig.subplots_adjust(hspace=0.6, wspace=0.3)
 #绘制原始数据散点图
 axes[0].scatter(X_train[:, 0], X_train[:, 1], label="Training set", s = 60)
 axes[0].scatter(X_test[:, 0], X_test[:, 1], marker='^', label="Test set", s = 60)
-axes[0].set_title("Initial Data")
+axes[0].set_title("Original Data")
 axes[0].set_xlabel("Feature 1")
 axes[0].set_ylabel("Feature 2")
 axes[0].legend(loc="upper left")
