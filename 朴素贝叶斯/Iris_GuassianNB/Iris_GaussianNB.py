@@ -16,6 +16,7 @@ def iris_type(s):
 
 
 if __name__ == "__main__":
+    #1. 加载数据
     path = "iris.data"
     data = pd.read_csv(path, header=0, names=['feature1','feature2','feature3','feature4','label'])
     print(data)
@@ -30,7 +31,7 @@ if __name__ == "__main__":
     print("Feature data:", x)
     print("labels:", y)
 
-    #构建管道
+    #2. 构建管道
     gnb = Pipeline([
         ('sc', StandardScaler()),
         ('clf', GaussianNB())])
@@ -39,7 +40,7 @@ if __name__ == "__main__":
     # gnb = KNeighborsClassifier(n_neighbors=5).fit(x, y.ravel())
 
     
-    # 画图
+    #3.画图
     N, M = 500, 500     # 横纵各采样多少个值
     x1_min, x1_max = x[:, 0].min(), x[:, 0].max()   # 第0列的范围
     x2_min, x2_max = x[:, 1].min(), x[:, 1].max()   # 第1列的范围
@@ -74,7 +75,7 @@ if __name__ == "__main__":
     plt.grid(True)
     plt.show()
 
-    # 训练集上的预测结果
+    #4. 训练集上的预测结果
     y_hat = gnb.predict(x)
     y = y.reshape(-1)
     result = y_hat == y
