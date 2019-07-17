@@ -23,17 +23,23 @@ if __name__ == "__main__":
     
     #2.构建模型
     mnb = MultinomialNB(alpha=1)    # 动手：换成GaussianNB()试试预测结果？
-    
+    gnb = GaussianNB()
     #3. 拟合模型
     mnb.fit(x, y)
+    gnb.fit(x, y)
     
     #4. 预测结果
     y_hat = mnb.predict(x)
-    print('预测类别：', y_hat)
+    y_hat2 = gnb.predict(x)
+    print('mnb预测类别：', y_hat)
+    print('gnb预测类别：', y_hat2)
+    
     
     #两种模型准确率计算方法
-    print('准确率：%.2f%%' % (100*np.mean(y_hat == y)))
-    print('系统得分：', mnb.score(x, y))
+    print('mnb准确率：%.2f%%' % (100*np.mean(y_hat == y)))
+    print('mnb系统得分：', mnb.score(x, y))
+    print('gnb准确率：%.2f%%' % (100*np.mean(y_hat2 == y)))
+    print('gnb系统得分：', gnb.score(x, y))
     
     # from sklearn import metrics
     # print metrics.accuracy_score(y, y_hat)
