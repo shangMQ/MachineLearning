@@ -48,13 +48,18 @@ def trainNB0(trainMatrix,trainCategory):
     """
     计算属于侮辱性文档的概率以及两个类别的概率向量
     输入：训练集矩阵（01元素构成），类别向量
-    输出：非侮辱性句子各个词的概率向量，侮辱性句子各个词的概率向量，文档属于侮辱性文档的概率
+    输出：非侮辱性句子各个词的概率向量，侮辱性句子各个词的概率向量，文档属于侮辱性文档的先验概率
     """
     numTrainDocs = len(trainMatrix) #文档个数（6个）
     numWords = len(trainMatrix[0]) #单个训练集中的词汇数（32个）
+    
+    #计算侮辱性类别的先验概率pc1，一般类别的先验概率pc0
     pAbusive = sum(trainCategory)/float(numTrainDocs)#计算文档属于侮辱性文档的概率pc1
+    Normal = 1 - pAbusive
+    
+    #计算条件概率
     p0Num = np.ones(numWords) #计算p(wi|c1)或p(wi|c0)
-    p1Num = np.ones(numWords)   
+    p1Num = np.ones(numWords)
     p0Denom = 2.0
     p1Denom = 2.0  #change to 2.0初始化分母
 
@@ -67,19 +72,21 @@ def trainNB0(trainMatrix,trainCategory):
             #如果第i句不是侮辱句，则p0做相同操作
             p0Num += trainMatrix[i]
             p0Denom += sum(trainMatrix[i])
+    
     #分类别计算每个词出现的概率
     p1Vect = np.log(p1Num/p1Denom)
     p0Vect = np.log(p0Num/p0Denom)      
+    
     return p0Vect,p1Vect,pAbusive
 
 def classifyNB(vec2Classify, p0Vec, p1Vec, pClass1):
     """
     计算是否为侮辱性句子
-    输入：待分类的向量，p0Vec, p1Vec, 句子为侮辱性句子的概率
+    输入：待分类的向量，p0Vec, p1Vec, 句子为侮辱性句子的先验概率
     输出：0非侮辱性句子，1侮辱性句子
     """
-    p1 = np.sum(vec2Classify * p1Vec) + np.log(pClass1)    #element-wise mult
-    p0 = np.sum(vec2Classify * p0Vec) + np.log(1.0 - pClass1)
+    p1 = np.sum(vec2Classify * p1Vec)*pClass1    #element-wise mult
+    p0 = np.sum(vec2Classify * p0Vec)*(1.0 - pClass1)
     if p1 > p0:
         #返回概率大的类别
         return 1
@@ -113,5 +120,4 @@ def bagOfWords2VecMN(vocabList, inputSet):
 
 if __name__ == "__main__":
     testingNB()
-    
     
