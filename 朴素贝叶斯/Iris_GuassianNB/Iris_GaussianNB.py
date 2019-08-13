@@ -31,7 +31,7 @@ if __name__ == "__main__":
     print("Feature data:", x)
     print("labels:", y)
 
-    #2. 构建管道
+    #2. 构建管道（假定所有数据服从高斯分布）
     gnb = Pipeline([
         ('sc', StandardScaler()),
         ('clf', GaussianNB())])
