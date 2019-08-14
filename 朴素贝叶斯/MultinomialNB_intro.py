@@ -22,8 +22,8 @@ if __name__ == "__main__":
     print('样本：\n', x)
     
     #2.构建模型
-    mnb = MultinomialNB(alpha=1)    # 动手：换成GaussianNB()试试预测结果？
-    gnb = GaussianNB()
+    mnb = MultinomialNB(alpha=1)    #将每行当做一个类别来计算  
+    gnb = GaussianNB() #将每行的特征值当做该类别特征值的均值
     #3. 拟合模型
     mnb.fit(x, y)
     gnb.fit(x, y)
