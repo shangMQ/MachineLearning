@@ -24,7 +24,7 @@ def test_clf(clf):
     """
     print('分类器：', clf)
     
-    #创建等比数列
+    #创建等比数列,10个值从0.001到100
     alpha_can = np.logspace(-3, 2, 10)
     m = alpha_can.size #参数列表的大小，10
     
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     t_end = time()
     print('下载/加载数据完成，耗时%.3f秒' % (t_end - t_start))
     
-    #查看数据集相关信息
+    #2. 查看数据集相关信息
     print('数据类型：', type(data_train))
     print('训练集包含的文本数目：', len(data_train.data))
     print('测试集包含的文本数目：', len(data_test.data))
@@ -114,16 +114,17 @@ if __name__ == "__main__":
         print('文本%d(属于类别 - %s)：' % (i+1, categories[y_train[i]]))
         print(data_train.data[i])
         print('\n\n')
-        
+    
+    #3. 将英文文本转换为词向量
     vectorizer = TfidfVectorizer(input='content', stop_words='english', max_df=0.5, sublinear_tf=True)
     x_train = vectorizer.fit_transform(data_train.data)  # x_train是稀疏的，scipy.sparse.csr.csr_matrix
     x_test = vectorizer.transform(data_test.data)
     print('训练集样本个数：%d，特征个数：%d' % x_train.shape)
     print('停止词:\n')
-    pprint(vectorizer.get_stop_words())
+    pprint(vectorizer.get_stop_words())#pprint()打印优美格式的文本
     feature_names = np.asarray(vectorizer.get_feature_names())
 
-    #2. 试图将数据应用在不同的模型上
+    #4. 试图将数据应用在不同的模型上
     print('\n\n===================\n分类器的比较：\n')
     clfs = (MultinomialNB(),                # 0.87(0.017), 0.002, 90.39%
             BernoulliNB(),                  # 1.592(0.032), 0.010, 88.54%
