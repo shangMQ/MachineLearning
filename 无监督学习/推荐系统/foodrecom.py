@@ -90,6 +90,7 @@ def recommend(dataMat, user, N = 3, similarMeas=cosSim, estMethod=standEst):
         #对每个未评级菜品估计评分
         estimatedScore = estMethod(dataMat, user, item)
         itemScores.append((item,estimatedScore))
+    #按照estimatedScore值从大到小排序，并选出前N个
     recommandlist = sorted(itemScores, key=lambda i:i[1], reverse=True)[:N]
     print("针对用户{:d}的推荐列表{}".format(user, recommandlist))
     return recommandlist
