@@ -29,8 +29,9 @@ def pearsSim(inA, inB):
 
 def cosSim(inA, inB):
     #利用余弦计算相似度
-    inA = np.array(inA).reshape(5,)
-    inB = np.array(inB).reshape(5,)
+    n = inA.shape[1] #n是inA和inB的特征数
+    inA = np.array(inA).reshape(n,)
+    inB = np.array(inB).reshape(n,)
     num = np.dot(inA,inB)
     denom = linalg.norm(inA) * linalg.norm(inB)
     return 0.5 + 0.5 * (num/denom)
