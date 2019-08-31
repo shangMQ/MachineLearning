@@ -44,6 +44,31 @@ def printMat(inMat, thresh=0.8):
                 print(0, end="")
         print()
 
-if __name__ == "__main__":
+def imgCompress(numSV=3, thresh=0.8):
+    """
+    基于任意给定的奇异值数目来重构图像
+    参数:
+        numSV:奇异值数目
+        thresh:阈值
+    """
+    #加载原始数据矩阵
     dataMat = loadData()
-    printMat(dataMat )
+    print("-"*12,"原图像","-"*12)
+    printMat(dataMat, thresh)
+    
+    #对原始数据进行奇异值分解
+    U, sigma, VT = la.svd(dataMat)
+    
+    #重构奇异值矩阵
+    SigRecon = np.mat(np.zeros((numSV, numSV)))
+    for k in range(numSV):
+        SigRecon[k,k] = sigma[k]
+    
+    #重构后的手写数字矩阵
+    reconMat = U[:,:numSV] * SigRecon*VT[:numSV,:]
+    print("-"*12,"重构图像","-"*12)
+    printMat(reconMat)
+    
+
+if __name__ == "__main__":
+    imgCompress(2)
