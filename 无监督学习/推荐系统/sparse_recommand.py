@@ -37,10 +37,11 @@ def nintyPercent(dataMat):
         subenergy = sum(sigma2[:i])
         if subenergy >= energy:
             break
-    #利用奇异值构建对角矩阵
+    #利用奇异值构建对角矩阵，这里前3个特征值包含了矩阵的大部分信息
     sig = np.mat(np.eye(i) * sigma[:i])
     #利用U矩阵将物品转换到低维空间中(sig.I计算的是sig的逆矩阵)
     xformedItems = dataMat.T * U[:,:i] * sig.I
+    #原数据矩阵转换为一个shape=（特征，重要评分人数）的新矩阵
     return xformedItems
     
 
