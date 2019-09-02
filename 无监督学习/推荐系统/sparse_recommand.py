@@ -39,7 +39,7 @@ def nintyPercent(dataMat):
             break
     #利用奇异值构建对角矩阵
     sig = np.mat(np.eye(i) * sigma[:i])
-    #利用U矩阵将物品转换到低维空间中
+    #利用U矩阵将物品转换到低维空间中(sig.I计算的是sig的逆矩阵)
     xformedItems = dataMat.T * U[:,:i] * sig.I
     return xformedItems
     
