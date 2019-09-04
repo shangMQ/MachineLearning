@@ -6,7 +6,7 @@ Created on Tue Sep  3 21:51:26 2019
 """
 from sklearn.datasets import load_iris, load_boston
 from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import chi2, f_regression
+from sklearn.feature_selection import chi2, f_regression#实际上，导入了两种F检验方法：卡方检验和F回归检验
 
 #1. 特征选择在iris数据集上的应用结果
 print("---------iris数据集---------")
