@@ -15,7 +15,7 @@ X, y = iris.data, iris.target
 
 print("初始数据shape:", X.shape)
 
-#选择与y相关的最重要的k个特征，默认使用f_classif只适用于分类函数
+#选择与y相关的最重要的k个特征，默认使用f_classif只适用于分类函数，这里使用了卡方检验方法
 selection = SelectKBest(chi2, k=2).fit(X,y )
 X_new = selection.transform(X)
 featureInd = selection.get_support()
