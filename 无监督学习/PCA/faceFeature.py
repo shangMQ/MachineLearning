@@ -115,3 +115,10 @@ if __name__ == "__main__":
 
     #9. 查看经过pca处理后的数据图像
     showPCAPic(pca, faces)
+    
+    #10. 利用pca的前两个主要成分，将数据集中的所有人脸在散点图中可视化
+    fig = plt.figure("Two Principal Components")
+    plt.scatter(X_train_pca[:,0], X_train_pca[:,1], y_train)
+    plt.xlabel("The first component")
+    plt.ylabel("The second component")
+    plt.title("Two Principal Components")
