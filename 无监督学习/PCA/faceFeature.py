@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.decomposition import PCA
 
 def loadData():
     """
@@ -38,6 +39,18 @@ def showFacesPic(faces):
         ax.imshow(image)
         ax.set_title(faces.target_names[target])
 
+def showPCAPic(pca, faces):
+    """
+    显示利用PCA处理后的数据图像
+    """
+    image_shape = faces.images[0].shape
+    
+    fig, axes = plt.subplots(2,5,figsize=(15,8),subplot_kw={'xticks':(), 'yticks':()})
+    for i, (component, ax) in enumerate(zip(pca.components_, axes.ravel())):
+        ax.imshow(component.reshape(image_shape), cmap="viridis")
+        ax.set_title("{}.component".format((i+1)))
+        print("component shape:", component.shape)
+
 def celebrityCount(faces):
     """
     查看名人目标图像的个数
@@ -62,12 +75,13 @@ def eliminateInclination(faces):
     X_faces = X_faces/255
     return X_faces, y_faces
 
+
 if __name__ == "__main__":
     #1. 加载数据
     faces = loadData()
     
     #2. 查看前十张脸部图片
-    showFacesPic(faces)
+    #showFacesPic(faces)
     
     #3. 查看每个名人的图片数目
     celebrityCount(faces)
@@ -86,4 +100,18 @@ if __name__ == "__main__":
     print("train set score：{:.2f}".format(knn.score(X_train, y_train)))
     print("test set score：{:.2f}".format(knn.score(X_test, y_test)))
     
+    #7. 对训练数据拟合PCA对象(提取前100个主成分)
+    pca = PCA(n_components=100, whiten=True, random_state=0).fit(X_train)
+    X_train_pca = pca.transform(X_train)
+    X_test_pca = pca.transform(X_test)
+    print("X_train_pca shape:", X_train_pca.shape)
+    print("pca.components_shape:{}".format(pca.components_.shape))
     
+    #8. 对经过PCA处理的数据应用K近邻分类器
+    print("-----PCA处理后的数据构建单邻居KNN分类器------")
+    knn.fit(X_train_pca, y_train)
+    print("train set score：{:.2f}".format(knn.score(X_train_pca, y_train)))
+    print("test set score：{:.2f}".format(knn.score(X_test_pca, y_test)))
+
+    #9. 查看经过pca处理后的数据图像
+    showPCAPic(pca, faces)
