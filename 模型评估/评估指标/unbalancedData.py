@@ -4,6 +4,7 @@ Created on Fri Sep 27 22:27:39 2019
 不平衡数据集的处理
 @author: Kylin
 """
+from sklearn.metrics import confusion_matrix, f1_score, classification_report
 from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
 from sklearn.dummy import DummyClassifier
@@ -44,3 +45,32 @@ print("------使用Logistic分类器------")
 logreg = LogisticRegression(C=0.1).fit(X_train, y_train)
 pred_logreg = logreg.predict(X_test)
 print("LogisticRegression test score:", logreg.score(X_test, y_test))
+
+#7. 使用混淆矩阵来查看分类结果
+print("---------使用混淆矩阵评价分类结果----------")
+matrix1 = confusion_matrix(y_test, predict)
+print("使用Dummy分类器（最常见预测)混淆矩阵：\n", matrix1)
+
+matrix2 = confusion_matrix(y_test, pred_tree)
+print("决策树分类器 混淆矩阵：\n", matrix2)
+
+matrix3 = confusion_matrix(y_test, pred_dummy)
+print("使用Dummy分类器（随机预测)混淆矩阵：\n", matrix3)
+
+matrix4 = confusion_matrix(y_test, pred_logreg)
+print("使用LogisticRegression分类器 混淆矩阵：\n", matrix4)
+
+#8. 使用f1分数评价分类结果
+print("---------使用f1分数评价分类结果-----------")
+print("使用Dummy最常见预测的f1-score:", f1_score(y_test, predict))
+
+print("使用决策树的f1-score:", f1_score(y_test, pred_tree))
+
+print("使用Dummy随机预测的f1-score:", f1_score(y_test, pred_dummy))
+
+print("使用LogisticRegression的f1-score:", f1_score(y_test, pred_logreg))
+
+#8. 使用classification_report直接计算precision、recall、f1score
+print("---------使用classification_report评价分类结果-----------")
+print(classification_report(y_test, pred_logreg, target_names=["not nine", "nine"]))
+
