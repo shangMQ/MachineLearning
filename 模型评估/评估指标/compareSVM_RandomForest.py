@@ -4,7 +4,7 @@ Created on Sat Sep 28 12:26:55 2019
 比较SVM和RandomForestClassifier分类器
 @author: Kylin
 """
-from sklearn.metrics import precision_recall_curve, f1_score, average_precision_score
+from sklearn.metrics import precision_recall_curve, f1_score, average_precision_score,roc_curve, roc_auc_score
 from sklearn.datasets import make_blobs
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
@@ -63,4 +63,39 @@ ap_svc = average_precision_score(y_test, svc.decision_function(X_test))
 ap_rf = average_precision_score(y_test, rf.predict_proba(X_test)[:,1])
 print("average precision of svc:", ap_svc)
 print("average precision of randomforest:", ap_rf)
+
+#8. roc受试者特征曲线
+#SVM
+fpr, tpr, thresholds = roc_curve(y_test, svc.decision_function(X_test))
+fig = plt.figure("ROC curve")
+
+#找到最接近0的阈值下标
+close_zero = np.argmin(np.abs(thresholds))
+
+#将最小阈值对应的precesion\recall值绘制
+plt.plot(precision[close_zero], recall[close_zero], 'o', markersize=10,
+         label="threshold zero", fillstyle="none", c="k", mew=2)
+
+plt.plot(fpr, tpr, label="ROC curve of SVM")
+
+#RandomForest
+fpr, tpr, thresholds = roc_curve(y_test, rf.predict_proba(X_test)[:,1])
+plt.plot(fpr, tpr, label="ROC curve of RandomForest")
+
+close_default_rf = np.argmin(np.abs(thresholds_rf - 0.5))
+
+plt.plot(precision[close_default_rf], recall[close_default_rf], '^', markersize=10,
+         label="threshold rf", fillstyle="none", c="k", mew=2)
+
+plt.xlabel("FPR")
+plt.ylabel("TPR(recall)")
+plt.legend()
+plt.title("ROC")
+
+#9. 比较两者的AUC（ROC下的面积）
+rf_auc = roc_auc_score(y_test, rf.predict_proba(X_test)[:,1])
+svm_auc = roc_auc_score(y_test, svc.decision_function(X_test))
+print("RandomForest AUC:", rf_auc)
+print("SVM AUC:", svm_auc)
+
 
