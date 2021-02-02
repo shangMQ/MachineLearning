@@ -3,43 +3,40 @@
 # Python Version 3.7.3
 # OS macOS
 """
-卷积（emm）没写完
+图片转化为字符文本
 """
 import numpy as np
 from PIL import Image
-
-
-def convolve(image, weight):
-    height, width = image.shape
-    h, w = weight.shape
-    height_new = height - h + 1
-    width_new = width - w + 1
-    image_new = np.zeros((height_new, width_new), dtype=np.float)
-
-    for i in range(height_new):
-        for j in range(width_new):
-            image_new[i, j] = np.sum(image[i:i+h, j:j+w] * weight)
-
-    image_new = image_new.clip(0, 255)
-    image_new = np.rint(image_new).astype('uint8')
-    return image_new
+import cv2
 
 
 def main():
     # 1. 读入图像
+    # 两种读入图像的方式
+    # 第一种，使用openCV
+    # data = cv2.imread("pic/buting.jpg") # 可以用opencv打开图像
+    # print(data)
+    # print("数据类型：", type(data))
+    # print("数据大小：", data.shape)
+
+    # 第二种，使用PIL的Image模块
     image_file = "pic/buting.jpg"
     height = 100
-
-    # 2. 打开图像
     img = Image.open(image_file)
+    print("原始数据类型：", type(img))
+    data = np.array(img)
+    print(data)
+    print("数据类型：", type(data))
+    print("数据大小：", data.shape)
     img_width, img_height = img.size
 
     width = int(1.8 * height * img_width // img_height)
 
     img = img.resize((width, height), Image.ANTIALIAS)
     pixels = np.array(img.convert('L'))
-    print(pixels.shape)
-    chars = "SMQLOVEysl?7>!:;. "
+    print("读取的像素大小：", pixels.shape)
+
+    chars = "MNHQ$OC?7>!:-;. "
     N = len(chars)
     step = 256 // N
     print(N)
@@ -52,6 +49,9 @@ def main():
 
     with open("pic/buting.txt", mode='w') as f:
         f.write(result)
+
+    resultArray = np.array(result)
+    print(resultArray)
 
 
 if __name__ == "__main__":
