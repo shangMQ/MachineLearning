@@ -8,58 +8,84 @@ K近邻算法练习
 @author: Kylin
 """
 import numpy as np
-import operator #导入运算符模块
+import operator  # 导入运算符模块
+import matplotlib.pyplot as plt
 
-#创建带标签的数据集
+
+# 创建带标签的数据集
 def createDataSet():
-    group = np.array([[1.0, 1.1],[1.0, 1.0],[0, 0],[0, 0.1]])
-    labels = ['A', 'A', 'B', 'B']
+    group = np.array([[1.0, 1.1], [1.0, 1.0], [0, 0], [0, 0.1]])
+    labels = np.array(['A', 'A', 'B', 'B'])
     return group, labels
 
 
+def plotData(group, label):
+    """
+    绘制数据集
+    :param group:
+    :param label:
+    :return:
+    """
+    colorMap = {'A': "red", "B": "blue"}
+    colors = [colorMap.get(i) for i in label]
+    print(colors)
+    feature1 = group[:, 0]
+    feature2 = group[:, 1]
+
+    plt.scatter(feature1, feature2, s=30, c=colors)
+    for i in range(group.shape[0]):
+        plt.annotate(label[i], xy=(feature1[i], feature2[i]), xytext=(feature1[i] - 0.03, feature2[i] + 0.02))  # 这里xy是需要标记的坐标，xytext是对应的标签坐标
+    plt.xlabel("Feature 1")
+    plt.ylabel("Feature 2")
+    plt.show()
+
+
 def classify(inX, dataSet, labels, k):
-    '''
+    """
         参数简介：
         inX: 用于分类的输入向量
         dataSet: 输入的训练样本集
         labels: 标签向量
         k: 选择最近邻居的数目
-    '''
-   
+    """
     dataSetSize = dataSet.shape[0]
     
-    #1. 计算已知类别数据集中的点与当前点之间的距离
-    
-    #np.tile()将用于分类的输入向量纵向赋值为dataSetSize个, 在与每个dataSet作差
-    diffMat = np.tile(inX, (dataSetSize,1)) - dataSet
-    #为了避免出现负数，平方，因为距离均为正值
+    # 1. 计算已知类别数据集中的点与当前点之间的距离
+    # np.tile()将用于分类的输入向量纵向赋值为dataSetSize个, 在与每个dataSet作差
+    diffMat = np.tile(inX, (dataSetSize, 1)) - dataSet
+
+    # 为了避免出现负数，平方，因为距离均为正值
     sqDiffMat = diffMat**2
-    #计算和(按照行求和)
+    # 计算和(按照行求和)
     sqDistances = sqDiffMat.sum(axis=1)
-    #再开方，计算出与每个训练集中的欧式距离
+    # 再开方，计算出与每个训练集中的欧式距离
     distances = sqDistances**0.5
     
-    #2. 按照距离递增顺序排序，返回一个下标数组
+    # 2. 按照距离递增顺序排序，返回一个下标数组
     sortedDistIndicies = distances.argsort()    
     
-    #3. 选取与当前点距离最小的k个点
+    # 3. 选取与当前点距离最小的k个点
     classCount={}          
     for i in range(k):
         voteIlabel = labels[sortedDistIndicies[i]]
         classCount[voteIlabel] = classCount.get(voteIlabel,0) + 1
     
-    #4. 确定前k个点所在类别出现的频率,operator.itemgetter()用于获取对象哪些维的数据
+    # 4. 确定前k个点所在类别出现的频率,operator.itemgetter()用于获取对象哪些维的数据
     sortedClassCount = sorted(classCount.items(), 
                               key=operator.itemgetter(1), reverse=True)
     
-    #5. 返回前k个点出现频率最高的类别作为当前点的预测类别。
+    # 5. 返回前k个点出现频率最高的类别作为当前点的预测类别。
     return sortedClassCount[0][0]
 
 
-#当文件中没有引入其他模块时，返回__main__；当引入到其他模块时，会返回模块名    
+# 当文件中没有引入其他模块时，返回__main__；当引入到其他模块时，会返回模块名
 if __name__ == '__main__':
+   #  生成数据
    dataset, labels = createDataSet()
-   label = classify([0,0], dataset, labels, 3) 
+   plotData(dataset, labels)
+
+
+   label = classify([0,0], dataset, labels, 3)
    print("Predict label:{}".format(label))
     
 
