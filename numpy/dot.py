@@ -32,4 +32,10 @@ c = np.dot(a,b)
 print("二维向量a（m行k列）和b（k行n列）的dot计算是矩阵乘法，输出结果是一个二维矩阵（m行n列）")
 print(c)
 
+# 直接使用乘法，对应元素相乘
+a = np.array([[1, 2, 3],
+              [2, 3, 5]])
+b = np.array([4, 5, 6])
+print("a*b直接计算的结果：")
+print(np.array(a * b))
 
