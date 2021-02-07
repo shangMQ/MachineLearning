@@ -19,7 +19,7 @@ X_org = random.normal(size=(1000, 3))
 w = random.normal(size=3)
 
 X = random.poisson(10 * np.exp(X_org))
-y = np.dot(X, w)
+y = np.dot(X_org, w)
 
 # 2. 查看第一个特征的数值分布
 # print("特征1的数值分布情况:\n", np.bincount(X[:,0]))
