@@ -7,6 +7,7 @@ Created on Thu Apr 11 15:35:03 2019
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 class gradientdescent(object):
     """
     简单梯度上升法
@@ -60,6 +61,7 @@ class gradientdescent(object):
         net = np.dot(X, self.w_[1]) + self.w_[0]
         return net
 
+
 if __name__ == "__main__":
     X = np.linspace(0,5,15)
     y = X * 3 + 1
@@ -76,13 +78,14 @@ if __name__ == "__main__":
     fig.subplots_adjust(hspace=0.5, wspace=1)
     ax[0].scatter(X, y, color='red')
     ax[0].plot(X, liner)
-    ax[0].set_xlabel("x")
-    ax[0].set_ylabel("liner regression")
+    ax[0].set_xlabel("X")
+    ax[0].set_ylabel("Y")
     
     errornum = np.arange(gd.n_iter)
     ax[1].plot(errornum, cost)
     ax[1].set_xlabel("Epochs")
     ax[1].set_ylabel("Number of misclassification")
+    plt.suptitle("Linear Regression with Gradient Ascent Algorithm")
     plt.show()
     
     
