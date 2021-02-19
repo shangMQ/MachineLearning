@@ -7,6 +7,7 @@ Created on Thu Apr 11 15:35:03 2019
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 class gradientdescent(object):
     """
     简单梯度下降法
@@ -49,8 +50,8 @@ class gradientdescent(object):
             errors = output - y
             print("errors", errors)
             J0 = errors.sum()/n
-            #n是样本数
-            #注意(X.dot(errors))计算出来的是一个(n,)维数组
+            # n是样本数
+            # 注意(X.dot(errors))计算出来的是一个(n,)维数组
             J1 = (X.dot(errors)).sum()/n
             self.w_[0] -= self.eta * J0
             self.w_[1] -= self.eta * J1
@@ -64,8 +65,9 @@ class gradientdescent(object):
         print("net:", net)
         return net
 
+
 if __name__ == "__main__":
-    X = np.linspace(0,4,5)
+    X = np.linspace(0, 4, 5)
     y = X * 3 + 1 + np.random.randn(5)
     n = 5
     print("X", X)
@@ -82,13 +84,14 @@ if __name__ == "__main__":
     fig.subplots_adjust(hspace=0.5, wspace=1)
     ax[0].scatter(X, y, color='red')
     ax[0].plot(X, liner)
-    ax[0].set_xlabel("x")
-    ax[0].set_ylabel("liner regression")
+    ax[0].set_xlabel("X")
+    ax[0].set_ylabel("Y")
     
     errornum = np.arange(gd.n_iter)
     ax[1].plot(errornum, cost)
     ax[1].set_xlabel("Epochs")
     ax[1].set_ylabel("Number of misclassification")
+    plt.suptitle("Linear Regression with Gradient Descent Algorithm")
     plt.show()
     
     
