@@ -5,7 +5,8 @@ Created on Thu May 30 11:02:24 2019
 @author: Kylin
 """
 
-#!/usr/bin/python
+
+# !/usr/bin/python
 # -*- coding:utf-8 -*-
 
 import numpy as np
@@ -14,33 +15,36 @@ import matplotlib as mpl
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 import pandas as pd
-# 'sepal length', 'sepal width', 'petal length', 'petal width'
-iris_feature = u'花萼长度', u'花萼宽度', u'花瓣长度', u'花瓣宽度'
+
+# iris_feature = u'花萼长度', u'花萼宽度', u'花瓣长度', u'花瓣宽度'
+iris_feature = 'sepal length', 'sepal width', 'petal length', 'petal width'
 
 if __name__ == "__main__":
-    mpl.rcParams['font.sans-serif'] = [u'SimHei']  # 黑体 FangSong/KaiTi
+    mpl.rcParams['font.sans-serif'] = u"Times New Roman" # 黑体 FangSong/KaiTi
     mpl.rcParams['axes.unicode_minus'] = False
 
-   #利用pandas加载数据集
+    # 1. 利用pandas加载数据集
     path = 'iris.data'  # 数据文件路径
     data = pd.read_csv(path, names=["sepal-length", "sepal-width",
                                      "petal-length", "petal-width", "label"])
-    #为了便于处理数据，将label标记为int型数据
+    # 为了便于处理数据，将label标记为int型数据
     data["label"] = pd.Categorical(data["label"]).codes
-    
-    
-    #x_prime为特征数组，y为类标数组
+
+    # x_prime为特征数组，y为类标数组
     x_prime = np.array(data[["sepal-length", "sepal-width", "petal-length", "petal-width"]])
     y = np.array(data["label"])
-    
+
+    # 2. 根据不同的特征对，训练决策树
     feature_pairs = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]]
     plt.figure(figsize=(10, 9), facecolor='#FFFFFF')
     for i, pair in enumerate(feature_pairs):
-        # 准备数据
+        # 2.1 准备数据
         x = x_prime[:, pair]
+
+        # 2. 划分训练测试集
         x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7)
         
-        # 决策树学习
+        # 3. 决策树学习
         clf = DecisionTreeClassifier(criterion='entropy', min_samples_leaf=3)
         dt_clf = clf.fit(x_train, y_train)
 
@@ -63,10 +67,11 @@ if __name__ == "__main__":
         print('\t预测正确数目：', c)
         print('\t准确率: %.2f%%' % (100 * float(c) / float(len(y))))
 
-        # 显示
+        # 4. 显示与绘制
         cm_light = mpl.colors.ListedColormap(['#A0FFA0', '#FFA0A0', '#A0A0FF'])
         cm_dark = mpl.colors.ListedColormap(['g', 'r', 'b'])
-        
+
+        # 绘制子图
         plt.subplot(2, 3, i+1)
         plt.pcolormesh(x1, x2, y_show_hat, cmap=cm_light)  # 预测值
         plt.scatter(x[:, 0], x[:, 1], c=y.ravel(), edgecolors='k', s=40, cmap=cm_dark)
@@ -76,7 +81,8 @@ if __name__ == "__main__":
         plt.xlim(x1_min, x1_max)
         plt.ylim(x2_min, x2_max)
         plt.grid()
-    plt.suptitle(u'决策树对鸢尾花数据的两特征组合的分类结果', fontsize=18)
+
+    plt.suptitle(u'Iris Category Prediction By Decision Tree with Two Features', fontsize=18)
     plt.tight_layout(2)
     plt.subplots_adjust(top=0.92)
     plt.show()
