@@ -12,48 +12,51 @@ import numpy as np
 import matplotlib as mpl
 
 
-#设置图像的中文字体
-mpl.rcParams['font.sans-serif'] = [u'SimHei']
+# 设置图像的中文字体
+mpl.rcParams['font.sans-serif'] = 'Times New Roman'
 mpl.rcParams['axes.unicode_minus'] = False
 
-#获取数据
-ram_prices = pd.read_csv("ram_price.csv")
+# 1. 获取数据
+ram_prices = pd.read_csv("ram_price.csv", usecols=[1, 2], header=0)
+print(ram_prices.head())
 
-#数据可视化
-fig = plt.figure("计算机内存价格走势")
-plt.semilogy(ram_prices.date, ram_prices.price)#y轴是指数型单位
+# 2. 数据可视化
+fig = plt.figure("RAM Price Change")
+plt.semilogy(ram_prices.date, ram_prices.price)  # y轴是指数型单位
 plt.xlabel("year")
-plt.ylabel("Price in $/Mbyte") 
+plt.ylabel("Price in $/Mbyte")
+plt.title("RAM Price Change")
+plt.show()
 
-#利用历史数据来预测2000年后的价格
+# 3. 利用历史数据来预测2000年后的价格
 data_train = ram_prices[ram_prices.date < 2000]
 data_test = ram_prices[ram_prices.date >= 2000]
 
-#基于日期来预测价格
+# 4. 基于日期来预测价格
 X_train = data_train.date[:, np.newaxis]
-#利用对谁变换得到数据和目标之间更简单的关系
+# 利用对数变换得到数据和目标之间更简单的关系
 y_train = np.log(data_train.price)
 
-#对比回归树和线性回归的效果
+# 对比回归树和线性回归的效果
 tree = DecisionTreeRegressor().fit(X_train, y_train)
 linear_rag = LinearRegression().fit(X_train, y_train)
 
-#对所有数据进行预测
+# 对所有数据进行预测
 X_all = ram_prices.date[:, np.newaxis]
 pred_tree = tree.predict(X_all)
 pred_linear = linear_rag.predict(X_all)
 
-#对数变换逆运算
+# 对数变换逆运算
 price_tree = np.exp(pred_tree)
 price_linear = np.exp(pred_linear)
 
-#图像对比
+# 图像对比
 fig2 = plt.figure("回归树与线性回归对比")
-plt.semilogy(data_train.date, data_train.price, label="Training Data")
-plt.semilogy(data_test.date, data_test.price, label="Test Data")
+plt.semilogy(data_train.date, data_train.price, linestyle='--', lw=2, label="Training Data")
+plt.semilogy(data_test.date, data_test.price, linestyle='-.', lw=2, label="Test Data")
 plt.semilogy(ram_prices.date, price_tree, label="Tree Prediction")
 plt.semilogy(ram_prices.date, price_linear, label="Linear Prediction")
-plt.title("回归树与线性回归在预测计算机内存价格的对比")
+plt.title("DecisionRegressor Tree VS Linear Regression")
 plt.xlabel("year")
 plt.ylabel("price")
 plt.legend()
