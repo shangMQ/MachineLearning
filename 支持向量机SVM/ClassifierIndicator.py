@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
+"""
+分类指标对比
+"""
 
 import numpy as np
 from sklearn.metrics import accuracy_score
