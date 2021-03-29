@@ -3,14 +3,15 @@
 # Python Version 3.7.3
 # OS macOS
 """
-  利用blob生成数据集，并使用kmeans进行聚类分析
+    使用blob数据集拟合Kmeans聚类模型，含聚类的评价方法——轮廓系数
 """
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_blobs
+from sklearn.metrics import silhouette_samples
 from sklearn.cluster import KMeans
+from matplotlib import cm
 
 
 def loadData():
@@ -25,6 +26,47 @@ def plotData(X, y, message):
     plt.title(message)
     plt.grid()
     plt.show()
+
+
+def evaluateCluster(X, y):
+    """
+    使用轮廓系数度量聚类质量
+    :param X:
+    :param y:
+    :return:
+    """
+    # 计算轮廓系数
+    cluster_labels = np.unique(y)  # 获取聚类类别
+    n_cluster = cluster_labels.shape[0]  # 查看类别个数
+    silhouette_values = silhouette_samples(X, y, metric='euclidean')  # 以欧式距离为度量方式，计算轮廓系数
+
+    # 轮廓系数可视化
+    y_ax_lower, y_ax_upper = 0, 0
+    yticks = []
+
+    for i, c in enumerate(cluster_labels):
+        # 找到类别C的样本的轮廓系数
+        c_silhouette_values = silhouette_values[y == c]
+        c_silhouette_values.sort()
+
+        y_ax_upper += len(c_silhouette_values)
+        color = cm.jet(i / n_cluster)
+        plt.barh(range(y_ax_lower, y_ax_upper), c_silhouette_values, height=1, edgecolor='none', color=color)
+        yticks.append((y_ax_lower + y_ax_upper) / 2)
+        y_ax_lower += len(c_silhouette_values)
+
+        # print("yticks:", yticks)
+        # print("y_ax_lower:", y_ax_lower)
+
+    # 为了便于评价，添加轮廓系数的平均值
+    silhouette_avg = np.mean(silhouette_values)
+    plt.axvline(silhouette_avg, color='red', linestyle='--')
+    plt.yticks(yticks, cluster_labels+1)
+    plt.ylabel("Cluster")
+    plt.xlabel("Silhouette Coefficient")
+    plt.show()
+
+    return silhouette_values
 
 
 def main():
@@ -49,6 +91,9 @@ def main():
     plt.legend()
     plt.grid()
     plt.show()
+
+    # 5. 聚类结果评价
+    print(evaluateCluster(X, y_predict).shape)
 
 
 if __name__ == "__main__":
