@@ -2,6 +2,9 @@
 # Author Kylin
 # Python Version 3.7.3
 # OS macOS
+"""
+  利用blob生成数据集，并使用kmeans进行聚类分析
+"""
 
 import numpy as np
 import pandas as pd
@@ -36,6 +39,16 @@ def main():
     kmean.fit(X, y)
     y_predict = kmean.predict(X)
     plotData(X, y_predict, 'Predict')
+
+    # 4. 聚类对比
+    # 质心存放在kmeans模型的cluster_centers_属性中
+    plt.scatter(X[y_predict==0, 0], X[y_predict==0, 1], s=50, c='lightgreen', marker='s', label='cluster 1')
+    plt.scatter(X[y_predict==1, 0], X[y_predict==1, 1], s=50, c='orange', marker='s', label='cluster 2')
+    plt.scatter(X[y_predict==2, 0], X[y_predict==2, 1], s=50, c='lightBlue', marker='s', label='cluster 3')
+    plt.scatter(kmean.cluster_centers_[:, 0], kmean.cluster_centers_[:, 1], s=250, c='red', marker='*', label='centroids')
+    plt.legend()
+    plt.grid()
+    plt.show()
 
 
 if __name__ == "__main__":
