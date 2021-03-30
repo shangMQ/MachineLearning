@@ -78,7 +78,7 @@ def main():
 
     # 3. 使用kmeans算法
     kmean = KMeans(n_clusters=3, init='random', n_init=10, max_iter=300, tol=1e-04, random_state=0)
-    kmean.fit(X, y)
+    kmean.fit(X) # Kmeans是无监督学习方法，只需要传递特征数据即可
     y_predict = kmean.predict(X)
     plotData(X, y_predict, 'Predict')
 
