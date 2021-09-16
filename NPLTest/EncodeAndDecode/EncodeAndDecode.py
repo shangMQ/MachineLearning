@@ -142,14 +142,19 @@ class Decoder():
             tmp = data.iloc[:, col_index[i - 1]:col_index[i]].values.tolist()
             res_decoder[str(i)] = tmp
             res_decoder[str(i)] = res_decoder[str(i)].apply(lambda x: self.decodeFunc(x))
+        print("res_decoder")
+        print(res_decoder)
 
         if self.id_flag == True:
             # 如果包含id，需要将id列加上
-            id_data = data.iloc[:, 0]
+            id_data = pd.DataFrame(data.iloc[:, 0])
+            id_data.index = res_decoder.index
+            print("id_data")
+            print(id_data)
             res_decoder = pd.concat([id_data, res_decoder], axis=1)
+            print(res_decoder)
 
         return res_decoder
-
 
 if __name__ == "__main__":
     dic = {'id': [0, 1, 2, 3], 'col1': ['嘻嘻', '哈', '哇哈哈哈', '大白菜'], 'col2': ['头盔', '装甲', '步枪', '狙击枪']}
