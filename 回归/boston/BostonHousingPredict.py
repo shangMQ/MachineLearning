@@ -55,6 +55,12 @@ if __name__ == "__main__":
     cols = [2, 4, 5, 12, 13]
     sns.pairplot(df[cols], size=2)
     plt.show()
+    
+    # 计算特征的相关系数
+    cc = np.corrcoef(data.T)
+    print(cc.shape)
+    hm = sns.heatmap(cc, cbar=True, annot=True, square=True, fmt='.2f', yticklabels=cols, xticklabels=cols)
+    plt.show()
 
     # 数据集的特征与标签划分
     x, y = np.split(data, (13, ), axis=1)
