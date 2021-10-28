@@ -36,6 +36,7 @@ if __name__ == "__main__":
     mpl.rcParams['axes.unicode_minus'] = False
 
     # 1. 读取数据
+    # 由于.data数据利用空格进行分隔，需要进行特殊处理
     file_data = pd.read_csv('housing.data', header=None)
     data = np.empty((len(file_data), 14))
 
@@ -47,6 +48,13 @@ if __name__ == "__main__":
 
         d = list(map(float, list(filter(not_empty, d[0].split(' ')))))
         data[i] = d
+    
+    # 探索性数据分析
+    sns.set(style="whitegrid", context="notebook")
+    df = pd.DataFrame(data)
+    cols = [2, 4, 5, 12, 13]
+    sns.pairplot(df[cols], size=2)
+    plt.show()
 
     # 数据集的特征与标签划分
     x, y = np.split(data, (13, ), axis=1)
