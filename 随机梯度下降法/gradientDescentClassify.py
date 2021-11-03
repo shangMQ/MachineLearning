@@ -31,7 +31,7 @@ class gradientdescent(object):
         self.eta = eta
         self.n_iter = n_iter
     
-    def fit(self, X, y, n):
+    def fit(self, X, y):
         """
         训练并拟合数据
         参数：
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     X = np.array(dataX)
     y = np.array(datay)
     classify = gradientdescent()
-    w_, cost_ = classify.fit(X, y, 50)
+    w_, cost_ = classify.fit(X, y)
     print(w_)
     
     
