@@ -11,6 +11,7 @@ from sklearn.preprocessing import MinMaxScaler, PolynomialFeatures
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import Ridge
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score
 
 
 def main():
@@ -41,36 +42,52 @@ def main():
     # 4. 使用线性模型
     # 4.1 使用原始特征
     ridge1 = Ridge().fit(X_train_scaled, y_train)
+    y_train_ridge = ridge1.predict(X_train_scaled)
+    y_test_ridge = ridge1.predict(X_test_scaled)
     ridge1_train = ridge1.score(X_train_scaled, y_train)
     ridge1_test = ridge1.score(X_test_scaled, y_test)
     print("*******Linear Model************")
     print("========Initial Score=======")
     print("Train Score : ", ridge1_train)
     print("Test Score : ", ridge1_test)
+    print("Train R2 score : ", r2_score(y_train, y_train_ridge))
+    print("Test R2 score : ", r2_score(y_test, y_test_ridge))
 
     # 4.2 使用多项式交互特征
     ridge2 = Ridge().fit(X_train_poly, y_train)
+    y_train_poly = ridge2.predict(X_train_poly)
+    y_test_poly = ridge2.predict(X_test_poly)
     ridge2_train = ridge2.score(X_train_poly, y_train)
     ridge2_test = ridge2.score(X_test_poly, y_test)
     print("========Poly Score=======")
     print("Train Score : ", ridge2_train)
     print("Test Score : ", ridge2_test)
+    print("Train R2 score : ", r2_score(y_train, y_train_poly))
+    print("Test R2 score : ", r2_score(y_test, y_test_poly))
 
     # 5. 使用随即森林模型
     rf1 = RandomForestRegressor(n_estimators=100).fit(X_train_scaled, y_train)
+    y_train_rf = rf1.predict(X_train_scaled)
+    y_test_rf = rf1.predict(X_test_scaled)
     rf1_train = rf1.score(X_train_scaled, y_train)
     rf1_test = rf1.score(X_test_scaled, y_test)
     print("*******Random forest************")
     print("=======Initial Data========")
     print("Train Score : ", rf1_train)
     print("Test Score : ", rf1_test)
+    print("Train R2 score : ", r2_score(y_train, y_train_rf))
+    print("Test R2 score : ", r2_score(y_test, y_test_rf))
 
     rf2 = RandomForestRegressor(n_estimators=50).fit(X_train_poly, y_train)
     rf2_train = rf2.score(X_train_poly, y_train)
     rf2_test = rf2.score(X_test_poly, y_test)
+    y_train_poly_rf = rf2.predict(X_train_poly)
+    y_test_poly_rf = rf2.predict(X_test_poly)
     print("=======Poly Data========")
     print("Train Score : ", rf2_train)
     print("Test Score : ", rf2_test)
+    print("Train R2 score : ", r2_score(y_train, y_train_poly_rf))
+    print("Test R2 score : ", r2_score(y_test, y_test_poly_rf))
 
 
 if __name__ == "__main__":
