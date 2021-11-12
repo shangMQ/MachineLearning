@@ -26,12 +26,12 @@ fig = plt.figure("logistic的参数的取值对图像的影响")
 fig.subplots_adjust(hspace=0.4, wspace=0.4)
 for i in range(3):
     for j in range(3):
-        plt.subplot(3,3,k)
-        ax = fig.add_subplot(3,3,k)
+        ax = fig.add_subplot(3, 3, k)
         y = function(x, μ[i], γ[j])
         linelabel = "μ = {:} γ = {:}".format(μ[i], γ[j])
         plt.plot(x,y)
         plt.scatter(μ[i], 0.5, color='r')
         plt.title(linelabel)
         k += 1
-        
+
+plt.show()
