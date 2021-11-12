@@ -88,10 +88,10 @@ if __name__ == "__main__":
     ax[0].set_xlabel("X")
     ax[0].set_ylabel("Y")
     
-    errornum = np.arange(gd.n_iter)
-    ax[1].plot(errornum, cost)
+    iternum = np.arange(gd.n_iter)
+    ax[1].plot(iternum, cost)
     ax[1].set_xlabel("Epochs")
-    ax[1].set_ylabel("Number of misclassification")
+    ax[1].set_ylabel("Cost")
     plt.suptitle("Linear Regression with Gradient Descent Algorithm")
     plt.show()
     
