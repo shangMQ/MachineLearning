@@ -29,7 +29,7 @@ class gradientdescent(object):
         self.eta = eta
         self.n_iter = n_iter
     
-    def fit(self, X, y, n):
+    def fit(self, X, y):
         """
         训练并拟合数据
         参数：
@@ -44,6 +44,7 @@ class gradientdescent(object):
         """
         self.w_ = np.zeros(2)
         self.cost_ = []
+        n = X.shape[0]
         
         for i in range(self.n_iter):
             output = self.net_input(X)
@@ -74,7 +75,7 @@ if __name__ == "__main__":
     print("y", y)
     
     gd = gradientdescent()
-    weights, cost = gd.fit(X, y, n)
+    weights, cost = gd.fit(X, y)
     liner = weights[0] + weights[1]*X
     print("假定线性函数是：y=3x+1")
     print("The regression liner is:")
