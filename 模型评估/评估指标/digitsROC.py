@@ -17,7 +17,7 @@ y = digits.target == 9
 
 #2. 划分数据集
 X_train, X_test, y_train, y_test = train_test_split(digits.data, y, 
-                                                    random_state=0)
+                                                    random_state=0, stratify=y)
 
 for gamma in [1, 0.05, 0.01]:
     svc = SVC(gamma = gamma).fit(X_train, y_train)
