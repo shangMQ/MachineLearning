@@ -72,8 +72,8 @@ if __name__ == "__main__":
     rmse = np.sqrt(mse)  # Root Mean Squared Error
     print("(均方误差={:.2f}, 均方根误差={:.2f})".format(mse, rmse))
     #model.score()函数实际计算的就是R2决定系数
-    print("R2_train =", model.score(x_train, y_train))
-    print("R2_test =", model.score(x_test, y_test))
+    print("R2_train =", model.score(x1_train, y_train))
+    print("R2_test =", model.score(x1_test, y_test))
     
 
     t = np.arange(len(x1_test))
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     #因为随机打乱了，对测试集进行排序，方便图像显示效果
     order = y_test.argsort(axis=0) #y_test是个列向量
     y_test = y_test.values[order]
-    x_test = x_test.values[order,:]
+    x2_test = x2_test.values[order,:]
     y_hat = linreg.predict(np.array(x2_test))
     mse = np.average((y_hat - np.array(y_test)) ** 2)  # Mean Squared Error
     rmse = np.sqrt(mse)  # Root Mean Squared Error
@@ -114,4 +114,4 @@ if __name__ == "__main__":
     plt.legend(loc='upper right')
     plt.grid()
     plt.show()
-    
+
