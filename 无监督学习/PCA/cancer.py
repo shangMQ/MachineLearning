@@ -63,7 +63,7 @@ if __name__ == "__main__":
     print("features shape :", cancer.data.shape)
     
     # 2. 利用直方图查看各个特征中各个类别的分布情况
-    # showDataFeatures(cancer)
+    showDataFeatures(cancer)
 
     # 3. 利用StandardScaler标准化数据
     scaler = StandardScaler()
@@ -82,9 +82,10 @@ if __name__ == "__main__":
     print("After PCA shape:{:}".format(X_pca.shape))
 
     # 5. 利用前两个主成分作图
-    # drawMainFeatures(cancer, X_pca)
+    drawMainFeatures(cancer, X_pca)
 
     # 6. 查看主成分信息
+    # 利用pca.components_可以查看模型的特征向量
     print("PCA component shape:{}".format(pca.components_.shape))
     print("PCA components:\n", pca.components_)
 
