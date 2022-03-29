@@ -17,7 +17,7 @@ iris = load_iris()
 
 #2. 逻辑回归模型
 logreg = LogisticRegression()
-2
+
 #3. 利用五折交叉验证查看逻辑回归模型的精度
 scores = cross_val_score(logreg, iris.data, iris.target, cv=5)
 print("--------5 fold cross validation------")
