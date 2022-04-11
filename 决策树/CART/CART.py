@@ -5,6 +5,7 @@ Created on Tue Jul  2 21:16:20 2019
 @author: Kylin
 """
 import numpy as np
+import matplotlib.pyplot as plt
 
 def loadDataSet(fileName):
     """
@@ -19,7 +20,8 @@ def loadDataSet(fileName):
     for line in fr.readlines():
         curLine = line.strip().split('\t')
         #利用内置的map函数根据提供的函数方法对指定序列作映射
-        fltLine = [float(curLine[i]) for i in range(len(curLine))]
+        #fltLine = [float(curLine[i]) for i in range(len(curLine))]
+        fltLine = list(map(lambda x: float(x), curLine))
         dataSet.append(fltLine)
     return dataSet
 
