@@ -1,7 +1,7 @@
 # !/usr/bin/python
 # -*- coding:utf-8 -*-
 """
-根据身高体重元素
+根据身高体重元素绘制GMM等高线图——即边界图
 """
 
 import numpy as np
@@ -19,13 +19,19 @@ mpl.rcParams['axes.unicode_minus'] = False
 
 
 def expand(a, b):
+    """
+    左右边界各扩展5%，以便包含所有可能数据
+    :param a:
+    :param b:
+    :return:
+    """
     d = (b - a) * 0.05
     return a-d, b+d
 
 
 if __name__ == '__main__':
     # 读取数据
-    data = np.loadtxt('HeightWeight.csv', dtype=np.float, delimiter=',', skiprows=1)
+    data = np.loadtxt('HeightWeight.csv', delimiter=',', skiprows=1)
     print(data.shape)
     # 数据集第一列为性别label，后两列为特征数据
     y, x = np.split(data, [1, ], axis=1)
@@ -55,6 +61,7 @@ if __name__ == '__main__':
         z = y_test_hat == 0
         y_test_hat[z] = 1
         y_test_hat[~z] = 0
+    # 计算准确率
     acc = np.mean(y_hat.ravel() == y.ravel())
     acc_test = np.mean(y_test_hat.ravel() == y_test.ravel())
     acc_str = '训练集准确率：%.2f%%' % (acc * 100)
@@ -63,14 +70,18 @@ if __name__ == '__main__':
     print(acc_test_str)
 
     # 绘制等高线，查看混合高斯模型的边界
+    # 设置等高线前景和背景色
     cm_light = mpl.colors.ListedColormap(['#FF8080', '#77E0A0'])
     cm_dark = mpl.colors.ListedColormap(['r', 'g'])
+    # 生成等高线数据
     x1_min, x1_max = x[:, 0].min(), x[:, 0].max()
     x2_min, x2_max = x[:, 1].min(), x[:, 1].max()
     x1_min, x1_max = expand(x1_min, x1_max)
     x2_min, x2_max = expand(x2_min, x2_max)
     x1, x2 = np.mgrid[x1_min:x1_max:500j, x2_min:x2_max:500j]
     grid_test = np.stack((x1.flat, x2.flat), axis=1)
+    print(grid_test.shape)
+    # 预测数据
     grid_hat = gmm.predict(grid_test)
     grid_hat = grid_hat.reshape(x1.shape)
 
@@ -79,11 +90,13 @@ if __name__ == '__main__':
         grid_hat[z] = 1
         grid_hat[~z] = 0
     plt.figure(figsize=(7, 6), facecolor='w')
-    plt.pcolormesh(x1, x2, grid_hat, cmap=cm_light)
     # plt.pcolormesh的作用在于能够直观表现出分类边界
-    plt.scatter(x[:, 0], x[:, 1], s=50, c=y.flatten(), marker='o', cmap=cm_dark, edgecolors='k')
-    # 绘制测试集的分类边界
-    plt.scatter(x_test[:, 0], x_test[:, 1], s=60, c=y_test.flatten(), marker='^', cmap=cm_dark, edgecolors='k')
+    plt.pcolormesh(x1, x2, grid_hat, cmap=cm_light)
+    # 绘制训练集预测结果，圆形
+    train = plt.scatter(x[:, 0], x[:, 1], s=50, c=y.flatten(), marker='o', cmap=cm_dark, edgecolors='k')
+    # 绘制测试集的分类结果，三角形
+    test = plt.scatter(x_test[:, 0], x_test[:, 1], s=60, c=y_test.flatten(), marker='^', cmap=cm_dark, edgecolors='k')
+    plt.legend((train, test), ('train', 'test'), loc=1)
 
     # 预测概率
     p = gmm.predict_proba(grid_test)
