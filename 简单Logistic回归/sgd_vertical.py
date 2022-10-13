@@ -1,5 +1,5 @@
 import time
-
+import math
 import numpy as np
 import pandas as pd
 import sklearn.linear_model as linear_model
@@ -98,19 +98,25 @@ if __name__ == "__main__":
     # 最大迭代次数
     max_iter = 100
     # batch size
-    mini_batch = 200
+    batch_size = 200
 
     cls = linear_model.SGDClassifier(loss="log_loss", penalty="l2", alpha=0.1, max_iter=100, learning_rate='constant', eta0=0.1, fit_intercept=False) # SGDClassifier with loss="log"
 
     classes = np.array([0, 1])
     auc_list = []
     ks_list = []
-    
+
+    batch_time = math.ceil(X_train.shape[0] / batch_size)
+
     for i in range(max_iter):
-        batch_index = np.random.choice(X_train.shape[0], mini_batch, replace=False)
-        X_batch = X_train[batch_index]
-        y_batch = y_train[batch_index]
-        cls.partial_fit(X_batch, y_batch, classes=classes)
+        for batch in range(batch_time):
+            if batch < batch_time - 1:
+                sample_index = range(batch * batch_size, (batch + 1) * batch_size)
+            else:
+                sample_index = range(batch * batch_size, X_train.shape[0])
+            X_batch = X_train[sample_index]
+            y_batch = y_train[sample_index]
+            cls.partial_fit(X_batch, y_batch, classes=classes)
 
     y_train_pred = cls.predict_proba(X_train)
     y_test_pred = cls.predict_proba(X_test)
