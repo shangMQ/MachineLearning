@@ -73,10 +73,14 @@ if __name__ == "__main__":
     print(f"host shape = {x_host.shape}")
 
     # 数据集合并
-    X = pd.merge(x_guest, x_host, on="id").values
+    X = pd.merge(x_guest, x_host, on="id")
+    id_col = pd.DataFrame(X.index, columns=["id"])
+    X = X.values
+    y_guest = pd.merge(id_col, y_guest, on="id")
+    y_guest.set_index("id", inplace=True)
 
     # 训练集测试集划分，train_size控制训练集的比例
-    X_train, X_test, y_train, y_test = train_test_split(X, y_guest, train_size=0.8, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y_guest, train_size=0.9, random_state=0)
     y_train = y_train.values.ravel()
     y_test = y_test.values.ravel()
     print("======After splited========")
@@ -101,7 +105,7 @@ if __name__ == "__main__":
     classes = np.array([0, 1])
     auc_list = []
     ks_list = []
-
+    
     for i in range(max_iter):
         batch_index = np.random.choice(X_train.shape[0], mini_batch, replace=False)
         X_batch = X_train[batch_index]
