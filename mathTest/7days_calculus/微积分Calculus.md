@@ -431,12 +431,12 @@ $$
 
   - 第L层$\delta$（输出层）的推导：
 
-    - 先定义误差δ的一般形式
+  - 先定义误差δ的一般形式
       $$
       \delta _j^{(l)}=\frac{\partial J(\theta)}{\partial z_j^{(l)}}
       $$
 
-    - 对于输出层的误差推导
+  - 对于输出层的误差推导
       $$
       \delta _j^{(L)}=\frac{\partial J(\theta)}{\partial z_j^{(L)}}
       =\frac{\partial J(\theta)}{\partial a_j^{(L)}} \frac{\partial a_j^{(L)}}{\partial z_j^{(L)}} 
