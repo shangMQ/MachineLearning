@@ -431,24 +431,25 @@ $$
 
   - 第L层$\delta$（输出层）的推导：
 
-    - 先定义误差δ的一般形式
+  - 先定义误差δ的一般形式
       $$
       \delta _j^{(l)}=\frac{\partial J(\theta)}{\partial z_j^{(l)}}
       $$
-
-    - 对于输出层的误差推导
+  - 对于输出层的误差推导
       $$
       \delta _j^{(L)}=\frac{\partial J(\theta)}{\partial z_j^{(L)}}
       =\frac{\partial J(\theta)}{\partial a_j^{(L)}} \frac{\partial a_j^{(L)}}{\partial z_j^{(L)}} 
       =\frac{\partial J(\theta)}{\partial a_j^{(L)}} g^{'}(z_j^{(L)})
       $$
-      推广得到：
+   
+   推广得到：
       $$
       \delta _j^{(l)}
       =\frac{\partial J(\theta)}{\partial a_j^{(l)}} g^{'}(z_j^{(l)})
       =\sum_{k=1}^{K} \frac{\partial J(\theta)}{\partial z_k^{(l+1)}} \frac{\partial z_k^{(l+1)}}{\partial a_j^{(l)}} g^{'}(z_j^{(l)})
       =\sum_{k=1}^{K}  \frac{\partial z_k^{(l+1)}}{\partial a_j^{(l)}}\delta _j^{(l+1)}g^{'}(z_j^{(l)})
       $$
+      
       简化：$\delta^{(l)}=(\theta ^{(l)})^T\delta ^{(l+1)}g^{'}(z_j^{(l)})$
 
 ​	 **推导的时候需要记得前向传播中a(l)是如何通过权重矩阵编程z(l+1)的，然后z(l+1)通过激活函数又会变成a(l+1)，只要遵循这个就可以一步一步推导得出结果。**
